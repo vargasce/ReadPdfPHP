@@ -1,6 +1,9 @@
 
 <?php
-
+  
+  /**
+   * Prueba para nuevo commit
+   */
   class ExceptionFile extends Exception
   {
       public function __construct($message, $code = 0, Throwable $previous = null) {
