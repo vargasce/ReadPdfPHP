@@ -1,4 +1,7 @@
 # ReadPdfPHP
 Lectura masiva de archivos pdf y busqueda de datos internos.
-
-# Para el correcto funcionamiento los archivos deben ser cargados en carpetas del servidor para poder ser procesados.
+# Anter de :
+Los archivos pdf previamente deben ser cargados en carpeta del servidor para ser procesados.
+Luego retorna un array con los archivos que coinciden.
+# Servidior :
+Se utilizo un servidor Apache con el entorno de XAMMP
