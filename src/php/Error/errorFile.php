@@ -1,8 +1,8 @@
 
 <?php
   
-  /**
-   * Prueba para nuevo commit
+  /** EXCEPTION CUSTOM
+   * @Observations > Exception custom error read files.
    */
   class ExceptionFile extends Exception
   {
@@ -11,12 +11,13 @@
           parent::__construct($message, $code, $previous);
       }
 
+      //LA VISIBILIDAD DE LA EXCEPTION
       public function __toString() {
           return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
       }
 
       public function customFunction() {
-          echo "A custom function for this type of exception\n";
+          echo "No APLICADO\n";
       }
   }
 
