@@ -9,15 +9,16 @@ $( document ).ready(function() {
     
     try{
       let result = await sendData( text, filesSend );
-      console.log( result );
+      viewResult( result );
+      //console.log( result ); //DESCOMENTAR PARA VER INFO EN CONSOLA.
     }catch( err ){
-      console.error( err );
+      //console.error( err );  //DESCOMENTAR PARA VER INFO EN CONSOLA.
     }
 
   });
 
 
-  //EVENT LOAD FILE
+  //EVENT LOAD FILE VIEW
   document.getElementById("filepicker").addEventListener("change", function(event) {
     let output = document.getElementById("listing");
     let files = event.target.files;
@@ -30,12 +31,12 @@ $( document ).ready(function() {
   }, false);
 
   //EVENT REFRESH PAGES
-  document.getElementById("refrehs").addEventListener("click", ( event ) =>{
+  document.getElementById("refrehs").addEventListener("click", (  ) =>{
     location.reload();
   });
 
 
-  //SEND DATA POST 
+  //SEND DATA POST > METHOD POST ( search.php ) 
   const sendData = ( text, files ) =>{
     return new Promise( ( resolve, reject ) =>{
 
@@ -43,10 +44,8 @@ $( document ).ready(function() {
 
         let send = [];
         for(let i=0; i < files.length; i++){
-          send.push( files[i].name )
+          send.push( files[i].name );        //SOLO ME QUEDO CON LOS NOMBRE DE ARCHIVO
         }
-
-        let sendPacket = JSON.stringify( send );
 
         $.ajax({
           type: "POST",
@@ -58,18 +57,35 @@ $( document ).ready(function() {
             setTimeout(function() { 
               $('#myModal').modal('hide');
             }, 3000);
-            resolve ( result );
+            resolve ( JSON.parse( result) );
           },
           error : ( ems, message ) =>{
-            reject( 'Error en la solicitud.' );
+            reject( 'ERROR IN REQUEST.' );
           }
         });
 
       }catch( err ){
-        reject( 'Error al enviar datos.' );
+        reject( 'ERROR IN DATA POST.' );
       }
  
     });
+  }
+
+  //VIEW RESULT
+  const viewResult = ( results = null ) =>{
+
+    if( results ){
+      let resultSplit = results.toString().split(',');
+      let data = '<ul>';
+      resultSplit.forEach( element => {
+        data += `
+          <li> ${element} </li>
+        `;
+      });
+      data += '</ul>'
+      
+      document.getElementById("result").innerHTML = data;   
+    }
   }
 
 });
