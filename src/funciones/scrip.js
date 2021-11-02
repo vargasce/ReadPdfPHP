@@ -5,10 +5,9 @@ $( document ).ready(function() {
 
     event.preventDefault();
     let text = document.getElementById("text").value;
-    let filesSend = document.getElementById("filepicker").files ;
     
     try{
-      let result = await sendData( text, filesSend );
+      let result = await sendData( text );
       viewResult( result );
       //console.log( result ); //DESCOMENTAR PARA VER INFO EN CONSOLA.
     }catch( err ){
@@ -19,39 +18,39 @@ $( document ).ready(function() {
 
 
   //EVENT LOAD FILE VIEW
-  document.getElementById("filepicker").addEventListener("change", function(event) {
-    let output = document.getElementById("listing");
-    let files = event.target.files;
+  //document.getElementById("filepicker").addEventListener("change", function(event) {
+    //let output = document.getElementById("listing");
+    //let files = event.target.files;
 
-    for (let i=0; i<files.length; i++) {
-      let item = document.createElement("li");
-      item.innerHTML = files[i].webkitRelativePath;
-      output.appendChild(item);
-    };
-  }, false);
+    //for (let i=0; i<files.length; i++) {
+      //let item = document.createElement("li");
+      //item.innerHTML = files[i].webkitRelativePath;
+      //output.appendChild(item);
+    //};
+  //}, false);
 
   //EVENT REFRESH PAGES
-  document.getElementById("refrehs").addEventListener("click", (  ) =>{
-    location.reload();
-  });
+  //document.getElementById("refrehs").addEventListener("click", (  ) =>{
+    //location.reload();
+  //});
 
 
   //SEND DATA POST > METHOD POST ( search.php ) 
-  const sendData = ( text, files ) =>{
+  const sendData = ( text ) =>{
     return new Promise( ( resolve, reject ) =>{
 
       try{
 
-        let send = [];
-        for(let i=0; i < files.length; i++){
-          send.push( files[i].name );        //SOLO ME QUEDO CON LOS NOMBRE DE ARCHIVO
-        }
+        //let send = [];
+        //for(let i=0; i < files.length; i++){
+          //send.push( files[i].name );        //SOLO ME QUEDO CON LOS NOMBRE DE ARCHIVO
+        //}
 
         $.ajax({
           type: "POST",
           dataType: 'text',
           url: '../php/search.php',
-          data: { 'text' : text , 'files' :  send  } ,
+          data: { 'text' : text } ,
           beforeSend : ()=>{ $('#myModal').modal('show'); },
           success: ( result ) =>{
             setTimeout(function() { 
@@ -76,15 +75,25 @@ $( document ).ready(function() {
 
     if( results ){
       let resultSplit = results.toString().split(',');
-      let data = '<ul>';
-      resultSplit.forEach( element => {
-        data += `
-          <li> ${element} </li>
-        `;
-      });
-      data += '</ul>'
-      
-      document.getElementById("result").innerHTML = data;   
+
+      if( resultSplit.length > 0 ){
+
+        let data = '<ul>';
+        resultSplit.forEach( element => {
+          data += `
+            <li> ${element} </li>
+          `;
+        });
+        data += '</ul>'
+        
+        document.getElementById("result").innerHTML = data;   
+
+      }else{
+        document.getElementById("result").innerHTML = resultSplit;   
+      }
+
+    }else{
+      document.getElementById("result").innerHTML = "";
     }
   }
 

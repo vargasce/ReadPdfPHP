@@ -4,21 +4,30 @@
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-		if (isset($_POST["text"]) && isset($_POST['files']) ) {
+		if ( isset($_POST["text"]) ) {
 			
 			try{
 				require_once('searchFile.php');		
 
-				$postText = $_POST['text'];  //OBTENEMOS TEXTO A BUSCAR.
-				$postFile = $_POST["files"]; //OBTENEMOS ARRAY DE NOMBRE PDF A LEER.
-				$path = "../files/";         //PATH DONDE SE ALOJARAN LOS PDF.
-
+				$postText = $_POST['text'];    					   //OBTENEMOS TEXTO A BUSCAR.
+				$path = $_SERVER['DOCUMENT_ROOT'];         //OBTENEMOS PATH RAIZ SERVER.
+				$postFile = scandir($path.'/doc/normas/'); //OBTENEMOS ARRAY DE NOMBRE PDF A LEER.
 			
-				//INSTANCIA DE CLASS
-				$searchFile = new SearchFile($path, $postFile, $postText );
-				$resultListData = $searchFile->getListPDF();
+				if( $postText != ""){
 
-				echo json_encode($resultListData);
+					//INSTANCIA DE CLASS
+					$searchFile = new SearchFile($path, $postFile, $postText );
+					$resultListData = $searchFile->getListPDF();
+
+					if( Count( $resultListData ) > 0 ){
+						echo json_encode($resultListData);
+					}else{
+						echo json_encode('No result!!');
+					}
+			
+				}else{
+					echo json_encode("");
+				}
 
 			}catch( Exception $err ){
 				echo json_encode("Error : ". $err);
@@ -31,7 +40,7 @@
 		}
 
 	}else{//END SERVER POST
-		echo json_encode( "IS NOT POST METHOD => DATA-JSON EXPECTED { 'text' : valorString, 'files' : ArrayListPDFName }" );
+		echo json_encode( "IS NOT POST METHOD => DATA-JSON EXPECTED { 'text' : valorString }" );
 	}
 
 ?>
