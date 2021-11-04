@@ -4,15 +4,16 @@
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-		if ( isset($_POST["text"]) ) {
+
+		if ( !empty($_POST['text']) ) {
 			
 			try{
 				require_once('searchFile.php');		
 
-				$postText = $_POST['text'];    					   //OBTENEMOS TEXTO A BUSCAR.
-				$path = $_SERVER['DOCUMENT_ROOT'];         //OBTENEMOS PATH RAIZ SERVER.
-				$postFile = scandir($path.'/doc/normas/'); //OBTENEMOS ARRAY DE NOMBRE PDF A LEER.
-			
+				$postText = $_POST['text'];    	   
+            $path = '../../doc/normas/';
+				$postFile = scandir($path);      
+
 				if( $postText != ""){
 
 					//INSTANCIA DE CLASS

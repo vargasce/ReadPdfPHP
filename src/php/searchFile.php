@@ -1,6 +1,6 @@
 <?php
 
-  include('PdfToText.phpclass');    //LIBRERIA LECTURA DE PDF
+  include('./pdf/PdfToText.phpclass');    //LIBRERIA LECTURA DE PDF
   include('./Error/errorFile.php'); //EXCEPTION CUSTOM SEARCHFILE
 
   class SearchFile
@@ -30,11 +30,11 @@
     public function getListPDF(){
 
       try{
-
+         
         for ($i = 2; $i < count( $this->files ); $i++) {
 
           $fileAux = $this->files[$i];                    //AUX NAME FILE SEARCH
-          $pdf = new PdfToText($this->path.'/doc/normas/'.$fileAux);
+          $pdf = new PdfToText($this->path.$fileAux);
           $data = $pdf->Text;                             //GET STRING FILE PDF
           $data = strtolower($data);                      //CONVERT TO LOWER CASE
           $this->verbose = strtolower( $this->verbose );  //CONVERT TO LOWER CASE

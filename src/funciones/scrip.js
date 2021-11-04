@@ -5,7 +5,6 @@ $( document ).ready(function() {
 
     event.preventDefault();
     let text = document.getElementById("text").value;
-    
     try{
       let result = await sendData( text );
       viewResult( result );
@@ -53,11 +52,11 @@ $( document ).ready(function() {
           data: { 'text' : text } ,
           beforeSend : ()=>{ $('#myModal').modal('show'); },
           success: ( result ) =>{
+            resolve ( result );
             setTimeout(function() { 
               $('#myModal').modal('hide');
             }, 3000);
-            resolve ( JSON.parse( result) );
-          },
+                      },
           error : ( ems, message ) =>{
             reject( 'ERROR IN REQUEST.' );
           }
@@ -74,7 +73,10 @@ $( document ).ready(function() {
   const viewResult = ( results = null ) =>{
 
     if( results ){
-      let resultSplit = results.toString().split(',');
+      //result = results.replace(/\\[\\]/g,'');
+      let result = results.replace('[','');  
+      let resultf = result.replace(']','');
+      let resultSplit = resultf.split(',');
 
       if( resultSplit.length > 0 ){
 
